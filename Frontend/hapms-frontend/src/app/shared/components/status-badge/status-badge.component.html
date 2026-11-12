@@ -1,0 +1,8 @@
+<span class="status-badge" 
+  [class.scheduled]="status() === 'Scheduled'"
+  [class.pending]="status() === 'Pending'"
+  [class.no-show]="status() === 'No-Show'"
+  [class.completed]="status() === 'Completed'"
+  [class.cancelled]="status() === 'Cancelled' || status() === 'Rescheduled'">
+  <ng-content></ng-content>
+</span>

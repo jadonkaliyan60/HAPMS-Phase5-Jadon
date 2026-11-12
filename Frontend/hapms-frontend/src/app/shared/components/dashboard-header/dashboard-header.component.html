@@ -1,0 +1,66 @@
+<header>
+  <button
+    class="menu-toggle"
+    type="button"
+    (click)="toggleNavigation.emit()"
+    [attr.aria-expanded]="menuOpen()"
+    aria-controls="dashboard-navigation"
+    [attr.aria-label]="menuOpen() ? 'Close navigation' : 'Open navigation'"
+  >
+    <app-icon [name]="menuOpen() ? 'close' : 'menu'" />
+  </button>
+  <nav
+    class="breadcrumb"
+    aria-label="Breadcrumb"
+  >
+    <span>{{ user().role }} portal</span><span aria-hidden="true">/</span
+    ><strong aria-current="page">{{ page() }}</strong>
+  </nav>
+  @if (page() === 'Book Appointment' || user().role === 'doctor') {
+    <span class="header-date">{{ today | date: 'EEEE, d MMMM yyyy' : '+0200' }}</span>
+  }
+  @if (user().role === 'doctor') {
+    <span
+      class="notification-placeholder"
+      role="img"
+      aria-label="Notifications unavailable"
+      title="Notifications unavailable"
+      ><app-icon name="bell"
+    /></span>
+  }
+  <div
+    class="profile"
+    (keydown.escape)="profileOpen.set(false)"
+  >
+    <button
+      class="profile-toggle"
+      type="button"
+      (click)="profileOpen.set(!profileOpen())"
+      [attr.aria-expanded]="profileOpen()"
+      aria-controls="profile-actions"
+      aria-label="Account options"
+    >
+      <span
+        class="avatar"
+        aria-hidden="true"
+        >{{ initials() }}</span
+      ><span class="identity"
+        ><strong>{{ user().fullName }}</strong
+        ><small>{{ user().role }}</small></span
+      ><app-icon name="chevron" />
+    </button>
+    @if (profileOpen()) {
+      <div
+        class="profile-menu"
+        id="profile-actions"
+      >
+        <button
+          type="button"
+          (click)="signOut.emit()"
+        >
+          <app-icon name="logout" />Sign out
+        </button>
+      </div>
+    }
+  </div>
+</header>

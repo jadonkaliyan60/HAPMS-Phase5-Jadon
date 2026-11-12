@@ -1,0 +1,105 @@
+@use '../../../../styles/tokens' as t;
+article {
+  background: t.$navy;
+  color: white;
+  padding: 26px;
+  border-radius: 12px;
+}
+.card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+h2 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #b9cedb;
+}
+.doctor {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.avatar {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #e8f7f4;
+  color: #007f77;
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+h3 {
+  margin: 0 0 7px;
+  font-size: 24px;
+}
+.doctor p {
+  margin: 0;
+  color: #b9cedb;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin: 22px 0;
+  font-size: 13px;
+}
+.details span {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+}
+app-icon {
+  color: #60d6cc;
+}
+.actions {
+  display: flex;
+  gap: 12px;
+}
+button {
+  padding: 12px 16px;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+}
+.reschedule {
+  background: t.$teal;
+  border: 1px solid t.$teal;
+}
+.cancel {
+  background: transparent;
+  border: 1px solid #355c74;
+}
+.reminder {
+  margin: 22px 0 0;
+  padding: 13px 12px;
+  background: #25465c;
+  border-radius: 8px;
+  color: #bfd3df;
+  font-size: 12px;
+  line-height: 1.4;
+}
+@media (max-width: 600px) {
+  article {
+    padding: 20px;
+  }
+  h3 {
+    font-size: 20px;
+  }
+  .details {
+    flex-direction: column;
+    gap: 14px;
+  }
+  .card-top {
+    align-items: flex-start;
+  }
+}

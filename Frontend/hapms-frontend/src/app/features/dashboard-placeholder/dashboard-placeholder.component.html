@@ -1,0 +1,10 @@
+<main class="placeholder">
+  <h1>{{ auth.user()?.role }} dashboard</h1>
+  <p>Signed in as {{ auth.user()?.fullName }}. This is a development routing placeholder.</p>
+  <button
+    class="primary"
+    (click)="logout()"
+  >
+    Sign out
+  </button>
+</main>

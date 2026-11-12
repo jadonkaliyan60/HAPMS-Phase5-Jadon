@@ -1,0 +1,56 @@
+<article aria-labelledby="next-appointment-title">
+  <div class="card-top">
+    <h2 id="next-appointment-title">YOUR NEXT APPOINTMENT</h2>
+    <app-status-badge [status]="appointment().status" />
+  </div>
+  <div class="doctor">
+    <span
+      class="avatar"
+      aria-hidden="true"
+      >{{ initials() }}</span
+    >
+    <div>
+      <h3>{{ appointment().doctorName || 'Doctor to be confirmed' }}</h3>
+      <p>
+        {{ appointment().speciality || 'Speciality to be confirmed' }} ·
+        {{ appointment().consultationType || 'Consultation' }}
+      </p>
+    </div>
+  </div>
+  <div class="details">
+    <span
+      ><app-icon name="calendar" />{{
+        appointment().startsAt | date: 'EEE, dd MMM yyyy' : '+0200'
+      }}</span
+    >
+    <span
+      ><app-icon name="clock" />{{ appointment().startsAt | date: 'HH:mm' : '+0200' }}
+      @if (appointment().endsAt) {
+        – {{ appointment().endsAt | date: 'HH:mm' : '+0200' }}
+      }
+    </span>
+    <span
+      ><app-icon name="pin" />{{
+        appointment().room ? 'Room ' + appointment().room : 'Room to be confirmed'
+      }}</span
+    >
+  </div>
+  <div class="actions">
+    <button
+      class="reschedule"
+      type="button"
+      [disabled]="disabled()"
+      (click)="reschedule.emit()"
+    >
+      Reschedule</button
+    ><button
+      class="cancel"
+      type="button"
+      [disabled]="disabled()"
+      (click)="cancel.emit()"
+    >
+      Cancel
+    </button>
+  </div>
+  <p class="reminder">Please arrive 10 minutes early and bring your patient ID.</p>
+</article>

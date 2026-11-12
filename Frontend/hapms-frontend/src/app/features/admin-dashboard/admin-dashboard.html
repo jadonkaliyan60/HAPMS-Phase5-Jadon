@@ -1,0 +1,71 @@
+<div style="padding: 40px; font-family: sans-serif; max-width: 1200px; margin: 0 auto;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+    <h1 style="color: #005f73; margin: 0;">Administrator Portal</h1>
+    <div>
+      <button (click)="loadUsers()" style="padding: 10px 20px; background: #f8f9fa; color: #333; border: 1px solid #dee2e6; border-radius: 5px; cursor: pointer; margin-right: 15px;">
+        ↻ Refresh List
+      </button>
+      <button (click)="toggleForm()" style="padding: 10px 20px; background: #0a9396; color: white; border: none; border-radius: 5px; cursor: pointer; margin-right: 15px;">
+        @if (showForm()) { Cancel } @else { + Add Staff }
+      </button>
+      <button routerLink="/login" style="padding: 10px 20px; background: #e9ecef; color: #333; border: none; border-radius: 5px; cursor: pointer;">Sign Out</button>
+    </div>
+  </div>
+
+  @if (showForm()) {
+    <div style="background: #f8f9fa; padding: 25px; border-radius: 8px; margin-bottom: 30px; border: 1px solid #dee2e6;">
+      <h3 style="margin-top: 0; color: #333; margin-bottom: 20px;">Register New Staff Account</h3>
+      <form [formGroup]="staffForm" (ngSubmit)="addStaff()" style="display: grid; gap: 20px; grid-template-columns: 1fr 1fr;">
+        <input type="text" formControlName="fullName" placeholder="Full Name" style="padding: 12px; border: 1px solid #ccc; border-radius: 4px; width: 100%; box-sizing: border-box;">
+        <input type="email" formControlName="email" placeholder="Email Address" style="padding: 12px; border: 1px solid #ccc; border-radius: 4px; width: 100%; box-sizing: border-box;">
+        <input type="password" formControlName="password" placeholder="Temporary Password" style="padding: 12px; border: 1px solid #ccc; border-radius: 4px; width: 100%; box-sizing: border-box;">
+        <select formControlName="role" style="padding: 12px; border: 1px solid #ccc; border-radius: 4px; width: 100%; box-sizing: border-box;">
+          <option value="Doctor">Doctor</option>
+          <option value="Nurse">Nurse</option>
+          <option value="Administrator">Administrator</option>
+        </select>
+        <button type="submit" [disabled]="staffForm.invalid" style="padding: 12px 20px; background: #005f73; color: white; border: none; border-radius: 5px; cursor: pointer; grid-column: span 2;">Create Account</button>
+      </form>
+    </div>
+  }
+
+  <div style="background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #eaeaea;">
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+      <thead style="background: #f8f9fa; border-bottom: 2px solid #dee2e6;">
+        <tr>
+          <th style="padding: 15px 20px; color: #495057;">Name</th>
+          <th style="padding: 15px 20px; color: #495057;">Email</th>
+          <th style="padding: 15px 20px; color: #495057;">Role</th>
+          <th style="padding: 15px 20px; color: #495057;">Status</th>
+          <th style="padding: 15px 20px; color: #495057;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (user of users(); track user.id) {
+          <tr style="border-bottom: 1px solid #f1f3f5;">
+            <td style="padding: 15px 20px;">{{ user.fullName || user.name }}</td>
+            <td style="padding: 15px 20px; color: #6c757d;">{{ user.email }}</td>
+            <td style="padding: 15px 20px;">{{ user.role }}</td>
+            <td style="padding: 15px 20px;">
+              <span [style.color]="user.status ? '#2b8a3e' : '#c92a2a'" style="font-weight: 500;">
+                {{ user.status ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+            <td style="padding: 15px 20px;">
+              @if (user.status && user.role !== 'Administrator') {
+                <button (click)="deactivateUser(user.id)" style="padding: 6px 12px; background: #e03131; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px;">Deactivate</button>
+              }
+              
+              @if (!user.status) {
+                <div style="display: flex; gap: 8px;">
+                  <button (click)="restoreUser(user.id)" style="padding: 6px 12px; background: #2b8a3e; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px;">Restore</button>
+                  <button (click)="hardDeleteUser(user.id)" style="padding: 6px 12px; background: #343a40; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px;">Delete Forever</button>
+                </div>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+<div class="sidebar">
+  <a
+    class="brand"
+    [routerLink]="['/', role(), 'dashboard']"
+    (click)="navigated.emit()"
+    aria-label="HAPMS dashboard"
+    ><span class="brand-icon"><app-icon name="cross" /></span
+    ><span><strong>HAPMS</strong><small>CONNECTED CARE. SIMPLIFIED.</small></span></a
+  >
+  <nav aria-label="Workspace navigation">
+    <p>{{ role() }} workspace</p>
+    <a
+      [routerLink]="['/', role(), 'dashboard']"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      (click)="navigated.emit()"
+      ><app-icon name="dashboard" />Dashboard</a
+    >
+    @if (role() === 'doctor') {
+      <a
+        routerLink="/doctor/appointments"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        (click)="navigated.emit()"
+        ><app-icon name="calendar" />Appointments</a
+      >
+    }
+    @if (role() === 'patient') {
+      <a
+        routerLink="/patient/book-appointment"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        (click)="navigated.emit()"
+      >
+        <app-icon name="calendar" />Book Appointment
+      </a>
+    }
+  </nav>
+  <button
+    class="sign-out"
+    type="button"
+    (click)="signOut.emit()"
+  >
+    <app-icon name="logout" />Sign out
+  </button>
+</div>

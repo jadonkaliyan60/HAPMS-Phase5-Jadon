@@ -1,0 +1,48 @@
+<h3>Appointment date</h3>
+<div class="month-navigation">
+  <button
+    type="button"
+    aria-label="Previous month"
+    [disabled]="month() <= today().slice(0, 7)"
+    (click)="changeMonth(-1)"
+  >
+    ‹
+  </button>
+  <strong aria-live="polite">{{ month() + '-01T00:00:00Z' | date: 'MMMM yyyy' : 'UTC' }}</strong>
+  <button
+    type="button"
+    aria-label="Next month"
+    (click)="changeMonth(1)"
+  >
+    ›
+  </button>
+</div>
+<div
+  class="calendar"
+  role="group"
+  aria-label="Appointment dates"
+>
+  @for (weekday of weekdays; track weekday) {
+    <span
+      class="weekday"
+      aria-hidden="true"
+      >{{ weekday[0] }}</span
+    >
+  }
+  @for (cell of cells(); track cell.key) {
+    <button
+      type="button"
+      [disabled]="!cell.available"
+      [class.today]="cell.key === today()"
+      [attr.aria-current]="cell.key === today() ? 'date' : null"
+      [attr.aria-pressed]="cell.key === selected()"
+      [attr.aria-label]="
+        (cell.key + 'T00:00:00Z' | date: 'EEEE, d MMMM yyyy' : 'UTC') +
+        (cell.available ? '' : ', unavailable')
+      "
+      (click)="dateChange.emit(cell.key)"
+    >
+      {{ cell.day }}
+    </button>
+  }
+</div>

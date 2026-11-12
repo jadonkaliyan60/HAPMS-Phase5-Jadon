@@ -1,0 +1,74 @@
+<div class="dashboard-header" style="margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
+  <div>
+    <h1 style="font-size: 24px; font-weight: 700; letter-spacing: -0.5px; margin: 0; color: #0f766e;">Nurse Station Portal</h1>
+    <p style="color: #6b7280; font-size: 14px; margin-top: 4px;">Manage patient triage and check-ins.</p>
+  </div>
+</div>
+
+<div class="agenda-section" style="background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px;">
+  <table style="width: 100%; text-align: left; border-collapse: collapse;">
+    <thead>
+      <tr style="border-bottom: 1px solid #e5e7eb; color: #6b7280; font-size: 12px; text-transform: uppercase;">
+        <th style="padding: 12px 8px; font-weight: 600;">DATE & TIME</th>
+        <th style="padding: 12px 8px; font-weight: 600;">PATIENT</th>
+        <th style="padding: 12px 8px; font-weight: 600;">DOCTOR</th>
+        <th style="padding: 12px 8px; font-weight: 600;">REASON</th>
+        <th style="padding: 12px 8px; font-weight: 600;">STATUS</th>
+        <th style="padding: 12px 8px; font-weight: 600;">TRIAGE ACTIONS</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (appointment of triageQueue(); track appointment.id) {
+        <tr style="border-bottom: 1px solid #f3f4f6; font-size: 14px;">
+          
+          <td style="padding: 16px 8px;">{{ appointment.appointmentDate | date:'MMM d, yyyy' }} | {{ appointment.startsAt | slice:0:5 }}</td>
+          <td style="padding: 16px 8px; font-weight: 500;">{{ appointment.patientName }}</td>
+          <td style="padding: 16px 8px;">{{ appointment.doctorName }}</td>
+          <td style="padding: 16px 8px; color: #6b7280;">{{ appointment.reason }}</td>
+          <td style="padding: 16px 8px;">
+            <span style="background: #eff6ff; color: #3b82f6; padding: 4px 8px; border-radius: 999px; font-size: 12px; font-weight: 500;">{{ appointment.status }}</span>
+          </td>
+          <td style="padding: 16px 8px;">
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              
+              
+              @if (appointment.status === 'Scheduled') {
+                <button style="background: #3b82f6; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500;" (click)="updateStatus(appointment.id, 'Checked-In')">Check-In</button>
+                <button style="background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500;" (click)="cancelAppointment(appointment.id)">Cancel</button>
+              }
+              
+             
+              @else if (appointment.status === 'Checked-In') {
+                <button style="background: #8b5cf6; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500;" (click)="updateStatus(appointment.id, 'In Triage')">Triage</button>
+                <button style="background: #9ca3af; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500;" (click)="updateStatus(appointment.id, 'Scheduled')">Undo</button>
+              }
+
+            
+              @else if (appointment.status === 'In Triage') {
+                <button style="background: #10b981; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500;" (click)="updateStatus(appointment.id, 'Ready for Doctor')">Ready</button>
+                <button style="background: #9ca3af; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500;" (click)="updateStatus(appointment.id, 'Checked-In')">Undo</button>
+              }
+
+             
+              @else if (appointment.status === 'Ready for Doctor') {
+                <button style="background: #9ca3af; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500;" (click)="updateStatus(appointment.id, 'In Triage')">Undo</button>
+              }
+
+             
+              @else {
+                <span style="color: #9ca3af; font-size: 12px; font-style: italic;">No actions available</span>
+              }
+
+            </div>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="6" style="padding: 48px 0; text-align: center; color: #6b7280;">
+            <p style="margin: 0; font-weight: 500; color: #111827;">No patients in the triage queue.</p>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

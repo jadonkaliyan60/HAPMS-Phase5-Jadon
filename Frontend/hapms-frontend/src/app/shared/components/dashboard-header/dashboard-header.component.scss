@@ -1,0 +1,145 @@
+@use '../../../../styles/tokens' as t;
+header {
+  height: 78px;
+  border-bottom: 1px solid t.$border;
+  background: white;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.breadcrumb {
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+  color: t.$muted;
+  align-items: center;
+}
+.breadcrumb span:first-child {
+  text-transform: capitalize;
+}
+.breadcrumb strong {
+  color: t.$navy;
+  font-weight: 600;
+}
+.profile {
+  position: relative;
+  margin-left: auto;
+}
+button {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: white;
+  border: 0;
+  color: t.$navy;
+}
+.profile-toggle {
+  border-left: 1px solid t.$border;
+  padding: 0 0 0 20px;
+  text-align: left;
+}
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #e8f7f4;
+  color: #007f77;
+  font-size: 12px;
+  font-weight: 600;
+}
+.identity strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+}
+small {
+  display: block;
+  font-size: 10px;
+  color: t.$muted;
+  margin-top: 5px;
+  text-transform: capitalize;
+}
+app-icon {
+  color: t.$muted;
+  width: 16px;
+  height: 16px;
+}
+.profile-menu {
+  position: absolute;
+  top: calc(100% + 14px);
+  right: 0;
+  z-index: 10;
+  border: 1px solid t.$border;
+  border-radius: 8px;
+  padding: 8px;
+  background: white;
+  min-width: 150px;
+}
+.profile-menu button {
+  padding: 10px;
+  width: 100%;
+  font-size: 13px;
+}
+.menu-toggle {
+  display: none;
+  padding: 8px;
+}
+@media (max-width: 900px) {
+  header {
+    padding: 0 20px;
+  }
+  .menu-toggle {
+    display: flex;
+  }
+}
+@media (max-width: 600px) {
+  header {
+    padding: 0 12px;
+    gap: 8px;
+  }
+  .identity {
+    display: none;
+  }
+  .profile-toggle {
+    gap: 8px;
+    padding-left: 12px;
+  }
+  .breadcrumb {
+    gap: 6px;
+    font-size: 11px;
+  }
+}
+
+.header-date {
+  margin-left: auto;
+  color: t.$muted;
+  font-size: 12px;
+}
+.header-date + .profile {
+  margin-left: 4px;
+}
+@media (max-width: 740px) {
+  .header-date {
+    display: none;
+  }
+  .header-date + .profile {
+    margin-left: auto;
+  }
+}
+
+.notification-placeholder {
+  display: inline-flex;
+  color: t.$muted;
+}
+.notification-placeholder + .profile {
+  margin-left: 4px;
+}
+@media (max-width: 740px) {
+  .notification-placeholder {
+    margin-left: auto;
+  }
+}

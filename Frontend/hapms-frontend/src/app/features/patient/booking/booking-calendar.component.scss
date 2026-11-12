@@ -1,0 +1,55 @@
+@use '../../../../styles/tokens' as t;
+
+h3 {
+  font-size: 13px;
+  margin: 0 0 10px;
+}
+.month-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+button {
+  color: t.$navy;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  min-height: 34px;
+}
+.month-navigation button {
+  font-size: 25px;
+  width: 34px;
+  line-height: 1;
+  color: t.$muted;
+}
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px 3px;
+  text-align: center;
+}
+.weekday {
+  color: t.$muted;
+  font-size: 11px;
+  padding: 5px 0 8px;
+}
+.calendar button {
+  font-size: 13px;
+  padding: 0;
+}
+button:disabled {
+  color: #8291a3;
+  cursor: default;
+}
+button:not(:disabled):hover,
+.today {
+  border-color: t.$border;
+}
+button[aria-pressed='true'] {
+  background: t.$teal;
+  border-color: t.$teal;
+  color: white;
+  font-weight: 700;
+}

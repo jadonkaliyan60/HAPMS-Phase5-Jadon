@@ -1,0 +1,162 @@
+@use '../../../../styles/tokens' as t;
+@use '../../../../styles/doctor-schedule-table';
+
+.heading,
+.schedule-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.heading {
+  margin-bottom: 24px;
+}
+h1 {
+  font-size: 28px;
+  margin: 0;
+}
+h2 {
+  font-size: 18px;
+  margin: 0 0 6px;
+}
+.schedule {
+  background: white;
+  border: 1px solid t.$border;
+  border-radius: 12px;
+  padding: 24px;
+}
+.schedule-heading {
+  margin-bottom: 20px;
+}
+.schedule-heading p,
+.count {
+  color: t.$muted;
+  font-size: 13px;
+  margin: 0;
+}
+.count {
+  margin-top: 20px;
+}
+.schedule-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px 12px;
+  flex-wrap: wrap;
+}
+.schedule-controls label {
+  font-size: 12px;
+  font-weight: 600;
+}
+.schedule-controls input {
+  width: auto;
+  min-width: 135px;
+  min-height: 36px;
+  padding: 6px 8px;
+}
+button {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 7px 9px;
+  color: #3c6794;
+  background: #eaf1f8;
+  font-size: 12px;
+  font-weight: 600;
+}
+.outline {
+  background: white;
+  color: t.$navy;
+  border-color: t.$border;
+}
+.availability {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 42px;
+  padding: 9px 15px;
+  font-size: 14px;
+  border-radius: 8px;
+}
+.text-action {
+  color: #007f77;
+  background: transparent;
+}
+.row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.row-actions button {
+  white-space: nowrap;
+}
+button[aria-disabled='true'] {
+  background: #f3f6f9;
+  color: #64778b;
+  cursor: default;
+}
+table {
+  min-width: 680px;
+}
+th:nth-child(4) {
+  width: 12%;
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.notice {
+  margin: 0 0 16px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: #e8f7f4;
+}
+dialog {
+  width: min(460px, calc(100% - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 24px;
+  border: 1px solid t.$border;
+  border-radius: 12px;
+  color: t.$navy;
+}
+dialog::backdrop {
+  background: #102a4380;
+}
+dialog p,
+dialog dl {
+  font-size: 14px;
+}
+dialog dl {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 10px 12px;
+}
+dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+dt {
+  color: t.$muted;
+}
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 20px;
+}
+.confirm {
+  background: t.$teal;
+  color: white;
+}
+@media (max-width: 600px) {
+  .schedule {
+    padding: 16px;
+  }
+  .row-actions button,
+  .dialog-actions button {
+    min-height: 36px;
+  }
+}

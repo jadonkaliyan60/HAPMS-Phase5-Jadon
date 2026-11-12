@@ -1,0 +1,308 @@
+<div class="page-heading">
+  <div>
+    <h1>Book an appointment</h1>
+    <p>Choose your doctor and a time that works for you.</p>
+  </div>
+  <span>Patient · {{ user()?.fullName }}</span>
+</div>
+
+@if (confirmation(); as appointment) {
+  <div
+    class="confirmation"
+    role="status"
+  >
+    <app-icon name="check" />
+    <span
+      >Booking confirmed with {{ appointment.doctorName }} on
+      {{ appointment.startsAt | date: 'EEEE, d MMMM yyyy, HH:mm' : '+0200' }}.</span
+    >
+    <a routerLink="/patient/dashboard">View dashboard</a>
+  </div>
+}
+
+<form
+  class="booking-grid"
+  (submit)="$event.preventDefault(); confirmBooking()"
+>
+  <fieldset
+    class="steps"
+    [disabled]="booking()"
+  >
+    <section
+      class="card"
+      aria-labelledby="doctor-heading"
+    >
+      <h2 id="doctor-heading">1. Choose your doctor</h2>
+      <p class="subtitle">Select a clinician for your visit</p>
+      @if (doctorError()) {
+        <p role="alert">{{ doctorError() }}</p>
+      }
+      <div class="doctor-fields">
+        <label
+          >Department
+          <select
+            #departmentSelect
+            [value]="department()"
+            required
+            (change)="selectDepartment(departmentSelect.value)"
+          >
+            <option value="">Choose a department</option>
+            @for (option of departments(); track option) {
+              <option [value]="option">{{ option }}</option>
+            }
+          </select>
+        </label>
+        <label
+          >Doctor
+          <select
+            #doctorSelect
+            [value]="doctorId()"
+            [disabled]="!department()"
+            required
+            (change)="selectDoctor(doctorSelect.value)"
+          >
+            <option value="">Choose a doctor</option>
+            @for (option of filteredDoctors(); track option.id) {
+              <option [value]="option.id">{{ option.fullName }}</option>
+            }
+          </select>
+        </label>
+      </div>
+
+      
+      <div style="margin-top: 16px;">
+        <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px;">Consultation Type</label>
+        <div style="display: flex; gap: 16px;">
+          <label style="display: flex; align-items: center; gap: 6px; font-weight: 500; cursor: pointer; font-size: 14px;">
+            <input type="radio" name="consultationType" value="In-Person" 
+                   [checked]="consultationType() === 'In-Person'"
+                   (change)="consultationType.set('In-Person')"
+                   style="width: 16px; height: 16px; margin: 0; cursor: pointer; accent-color: #0f766e;">
+            In-Person
+          </label>
+          <label style="display: flex; align-items: center; gap: 6px; font-weight: 500; cursor: pointer; font-size: 14px;">
+            <input type="radio" name="consultationType" value="Virtual" 
+                   [checked]="consultationType() === 'Virtual'"
+                   (change)="consultationType.set('Virtual')"
+                   style="width: 16px; height: 16px; margin: 0; cursor: pointer; accent-color: #0f766e;">
+            Virtual
+          </label>
+        </div>
+      </div>
+
+      @if (doctor(); as selectedDoctor) {
+        <div class="doctor-card">
+          <span
+            class="avatar"
+            aria-hidden="true"
+            >{{ initials() }}</span
+          >
+          <div>
+            <strong>{{ selectedDoctor.fullName }}</strong>
+            <p>
+              {{ selectedDoctor.department }} · Room {{ selectedDoctor.room }} ·
+              {{ selectedDoctor.durationMinutes }}-minute consultation
+            </p>
+          </div>
+          <app-icon name="check" />
+        </div>
+      }
+    </section>
+
+    <section
+      class="card"
+      aria-labelledby="date-heading"
+    >
+      <h2 id="date-heading">2. Select a date &amp; time</h2>
+      <p class="subtitle">
+        Available appointments · {{ month() + '-01T00:00:00Z' | date: 'MMMM yyyy' : 'UTC' }}
+      </p>
+      <div class="schedule">
+        <app-booking-calendar
+          [month]="month()"
+          [today]="today()"
+          [days]="days()"
+          [selected]="date()"
+          (monthChange)="selectMonth($event)"
+          (dateChange)="selectDate($event)"
+        />
+        <div>
+          <h3>
+            Available times
+            @if (date()) {
+              · {{ date() + 'T00:00:00Z' | date: 'EEE, d MMM' : 'UTC' }}
+            }
+          </h3>
+          @if (doctor(); as selectedDoctor) {
+            <p class="local-time">South African time · {{ selectedDoctor.durationMinutes }} min</p>
+          }
+          @if (availabilityError()) {
+            <p role="alert">{{ availabilityError() }}</p>
+            <button
+              class="retry"
+              type="button"
+              (click)="refreshAvailability()"
+            >
+              Refresh availability
+            </button>
+          } @else if (loading()) {
+            <p
+              class="local-time"
+              role="status"
+            >
+              Checking availability…
+            </p>
+          } @else if (!doctor()) {
+            <p class="local-time">Choose a doctor to see availability.</p>
+          } @else if (!date()) {
+            <p class="local-time">Choose an available date to see times.</p>
+          } @else {
+            <div
+              class="legend"
+              aria-hidden="true"
+            >
+              <span>Available</span><span>Booked</span><span>Selected</span>
+            </div>
+            <div
+              class="slots"
+              role="group"
+              aria-label="Appointment times"
+            >
+              @for (option of slots(); track option.startsAt) {
+                <button
+                  type="button"
+                  [disabled]="option.state !== 'available'"
+                  [attr.aria-pressed]="slot()?.startsAt === option.startsAt"
+                  [attr.aria-label]="
+                    (option.startsAt | date: 'HH:mm' : '+0200') + ', ' + option.state
+                  "
+                  (click)="selectTime(option.startsAt)"
+                >
+                  {{ option.startsAt | date: 'HH:mm' : '+0200' }}
+                </button>
+              } @empty {
+                <p class="local-time">No times are available on this date.</p>
+              }
+            </div>
+            <p class="slot-hint">Greyed time slots are unavailable.</p>
+          }
+        </div>
+      </div>
+    </section>
+
+    <section
+      class="card reason-card"
+      aria-labelledby="reason-heading"
+    >
+      <h2 id="reason-heading">3. Tell us about your visit</h2>
+      <label for="reason">Reason for visit</label>
+      <textarea
+        id="reason"
+        rows="4"
+        [formControl]="reason"
+        [maxLength]="reasonLimit"
+        required
+        aria-describedby="reason-count reason-error"
+        [attr.aria-invalid]="reason.touched && reason.invalid"
+        placeholder="Briefly describe your reason for visiting."
+      ></textarea>
+      <div class="reason-feedback">
+        <span id="reason-error">
+          @if (reason.touched && reason.invalid) {
+            {{
+              reason.hasError('maxlength')
+                ? 'Keep the reason within ' + reasonLimit + ' characters.'
+                : 'Enter a reason for your visit.'
+            }}
+          }
+        </span>
+        <span id="reason-count">{{ reasonText().length }} / {{ reasonLimit }}</span>
+      </div>
+    </section>
+  </fieldset>
+
+  <div class="summary-column">
+    <section
+      class="card summary"
+      aria-labelledby="summary-heading"
+    >
+      <h2 id="summary-heading">Appointment summary</h2>
+      <p class="subtitle">Review your selection before confirming</p>
+      <dl>
+        <div class="patient">
+          <dt>Patient</dt>
+          <dd>{{ user()?.fullName }} · {{ user()?.patientNumber || user()?.id }}</dd>
+        </div>
+        <div>
+          <dt>Doctor</dt>
+          <dd>{{ doctor()?.fullName || 'Choose a doctor' }}</dd>
+        </div>
+        <div>
+          <dt>Department</dt>
+          <dd>{{ department() || 'Choose a department' }}</dd>
+        </div>
+        
+       
+        <div>
+          <dt>Type</dt>
+          <dd>{{ consultationType() }}</dd>
+        </div>
+
+        <div>
+          <dt>Date</dt>
+          <dd>
+            {{
+              date() ? (date() + 'T00:00:00Z' | date: 'EEEE, d MMMM yyyy' : 'UTC') : 'Choose a date'
+            }}
+          </dd>
+        </div>
+        <div>
+          <dt>Time</dt>
+          <dd>
+            @if (slot(); as selectedSlot) {
+              {{ selectedSlot.startsAt | date: 'HH:mm' : '+0200' }} –
+              {{ selectedSlot.endsAt | date: 'HH:mm' : '+0200' }}
+            } @else {
+              Choose a time
+            }
+          </dd>
+        </div>
+        <div>
+          <dt>Location</dt>
+          <dd>
+            @if (consultationType() === 'Virtual') {
+              Online Video Consultation
+            } @else if (doctor(); as selectedDoctor) {
+              Room {{ selectedDoctor.room }} · {{ selectedDoctor.location || 'General Wing' }}
+            } @else {
+              Choose a doctor
+            }
+          </dd>
+        </div>
+      </dl>
+      <p class="info">
+        <span
+          class="info-icon"
+          aria-hidden="true"
+          >i</span
+        >
+        Your appointment will be confirmed after booking. Please arrive 10 minutes early.
+      </p>
+      @if (bookingError()) {
+        <p
+          class="booking-error"
+          role="alert"
+        >
+          {{ bookingError() }}
+        </p>
+      }
+      <button
+        class="confirm"
+        type="submit"
+        [disabled]="!canBook()"
+      >
+        <app-icon name="check" />{{ booking() ? 'Confirming…' : 'Confirm Booking' }}
+      </button>
+    </section>
+  </div>
+</form>

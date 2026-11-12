@@ -1,0 +1,279 @@
+@use 'styles/tokens' as t;
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: t.$background;
+  color: t.$navy;
+  font-family: t.$font;
+  font-size: 15px;
+}
+button,
+input,
+select {
+  font: inherit;
+}
+a,
+.text-button {
+  color: #00877e;
+  font-weight: 600;
+}
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+button {
+  cursor: pointer;
+}
+button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid #73c8c1;
+  outline-offset: 4px;
+}
+.auth-page {
+  min-height: 100dvh;
+  padding: 72px 7%;
+  display: flex;
+  align-items: center;
+}
+.auth-content {
+  width: 100%;
+  max-width: 1240px;
+  margin: auto;
+}
+.registration {
+  align-items: flex-start;
+  padding-top: 44px;
+}
+.registration .auth-content {
+  max-width: 1040px;
+}
+.registration form {
+  max-width: 850px;
+}
+.registration footer,
+.registration .development-note {
+  max-width: 850px;
+}
+h1 {
+  font-size: 34px;
+  letter-spacing: -0.7px;
+  line-height: 1.2;
+  margin: 20px 0;
+}
+.eyebrow {
+  font-size: 13px;
+  font-weight: 700;
+  color: t.$teal;
+}
+.description {
+  color: t.$muted;
+  line-height: 1.6;
+  margin: 0 0 28px;
+}
+.system-label {
+  background: #f7f9fb;
+  padding: 20px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-bottom: 28px;
+}
+.portal {
+  display: flex;
+  justify-content: space-between;
+  color: t.$muted;
+  margin-bottom: 26px;
+}
+.secure {
+  color: t.$teal;
+  font-size: 13px;
+}
+form {
+  display: grid;
+  gap: 24px;
+}
+.field label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.input-wrap {
+  position: relative;
+}
+input:not([type='checkbox']),
+select {
+  width: 100%;
+  height: 46px;
+  background: white;
+  border: 1px solid t.$border;
+  border-radius: 8px;
+  padding: 0 44px 0 12px;
+  color: t.$navy;
+  outline: none;
+  min-width: 0;
+}
+input:focus,
+select:focus {
+  border-color: t.$teal;
+  box-shadow: 0 0 0 2px #0c948a20;
+}
+input.invalid,
+select.invalid {
+  border-color: t.$error;
+}
+.eye,
+.input-icon {
+  position: absolute;
+  right: 8px;
+  top: 0;
+  height: 46px;
+  width: 32px;
+  display: grid;
+  place-items: center;
+  color: t.$muted;
+  background: none;
+  border: 0;
+}
+.eye svg {
+  width: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.error,
+.hint {
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 10px 0 0;
+}
+.error {
+  color: t.$error;
+}
+.hint {
+  color: t.$muted;
+}
+.options {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+.checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.checkbox input {
+  accent-color: t.$teal;
+  width: 16px;
+  height: 16px;
+  margin: 1px 0;
+  flex-shrink: 0;
+}
+.text-button {
+  border: 0;
+  background: none;
+  padding: 0;
+  font-size: 13px;
+}
+.primary {
+  width: 100%;
+  border: 0;
+  border-radius: 8px;
+  background: t.$teal;
+  color: white;
+  min-height: 48px;
+  font-weight: 600;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+}
+.primary:hover {
+  background: #087f77;
+}
+.primary span {
+  font-size: 24px;
+}
+footer {
+  border-top: 1px solid t.$border;
+  text-align: center;
+  margin-top: 24px;
+  padding-top: 26px;
+  color: t.$muted;
+  font-size: 14px;
+}
+footer a {
+  margin-left: 6px;
+}
+.development-note {
+  font-size: 11px;
+  color: t.$muted;
+  text-align: center;
+  margin-top: 24px;
+}
+.notice {
+  padding: 12px;
+  background: #e3f2ef;
+  border-radius: 6px;
+  line-height: 1.6;
+}
+.placeholder {
+  max-width: 650px;
+  margin: 80px auto;
+  padding: 24px;
+}
+.registration h1 {
+  font-size: 32px;
+}
+.registration .description {
+  margin-bottom: 28px;
+}
+@media (max-width: 600px) {
+  .auth-page {
+    padding: 40px 22px;
+    align-items: flex-start;
+  }
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  h1,
+  .registration h1 {
+    font-size: 28px;
+  }
+  .system-label {
+    line-height: 1.5;
+  }
+  .options {
+    gap: 10px;
+  }
+  .portal {
+    margin-bottom: 30px;
+  }
+  .registration form {
+    gap: 22px;
+  }
+}
+
+
+.auth-page:not(.registration) {
+  align-items: center;
+
+  .auth-content {
+    max-width: 900px;
+  }
+}

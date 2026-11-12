@@ -1,0 +1,60 @@
+<div class="dashboard-header" style="margin-bottom: 24px;">
+  <h1 style="font-size: 24px; font-weight: 700; letter-spacing: -0.5px; margin: 0;">Hello, {{ patientName() }}</h1>
+  <p style="color: #6b7280; font-size: 14px; margin-top: 4px;">Manage your healthcare journey.</p>
+</div>
+
+<div class="stats-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px;">
+  <div class="stat-card" style="background: white; padding: 24px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+    <p style="color: #6b7280; font-size: 13px; font-weight: 500; text-transform: uppercase; margin: 0 0 8px;">Total Visits</p>
+    <p style="color: #111827; font-size: 32px; font-weight: 700; margin: 0;">{{ totalVisits() }}</p>
+  </div>
+  <div class="stat-card" style="background: white; padding: 24px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+    <p style="color: #6b7280; font-size: 13px; font-weight: 500; text-transform: uppercase; margin: 0 0 8px;">Upcoming</p>
+    <p style="color: #0f766e; font-size: 32px; font-weight: 700; margin: 0;">{{ upcomingVisits() }}</p>
+  </div>
+  <div class="stat-card" style="background: white; padding: 24px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+    <p style="color: #6b7280; font-size: 13px; font-weight: 500; text-transform: uppercase; margin: 0 0 8px;">Completed</p>
+    <p style="color: #10b981; font-size: 32px; font-weight: 700; margin: 0;">{{ completedVisits() }}</p>
+  </div>
+</div>
+
+<div class="agenda-section" style="background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px;">
+  <h3 style="margin-top: 0; margin-bottom: 20px; font-size: 16px; font-weight: 600;">Your Appointment History</h3>
+  <table style="width: 100%; text-align: left; border-collapse: collapse;">
+    <thead>
+      <tr style="border-bottom: 1px solid #e5e7eb; color: #6b7280; font-size: 12px; text-transform: uppercase;">
+        <th style="padding: 12px 8px; font-weight: 600;">DATE & TIME</th>
+        <th style="padding: 12px 8px; font-weight: 600;">DOCTOR</th>
+        <th style="padding: 12px 8px; font-weight: 600;">REASON</th>
+        <th style="padding: 12px 8px; font-weight: 600;">STATUS</th>
+        <th style="padding: 12px 8px; font-weight: 600;">ACTION</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (appointment of myAppointments(); track appointment.id) {
+        <tr style="border-bottom: 1px solid #f3f4f6; font-size: 14px;">
+          <td style="padding: 16px 8px;">{{ appointment.appointmentDate | date:'MMM d, yyyy' }} | {{ appointment.startsAt }}</td>
+          <td style="padding: 16px 8px; font-weight: 500;">{{ appointment.doctorName }}</td>
+          <td style="padding: 16px 8px; color: #6b7280;">{{ appointment.reason }}</td>
+          <td style="padding: 16px 8px;">
+            <span style="background: #eff6ff; color: #3b82f6; padding: 4px 8px; border-radius: 999px; font-size: 12px; font-weight: 500;">{{ appointment.status }}</span>
+          </td>
+          <td style="padding: 16px 8px;">
+            @if (appointment.status === 'Scheduled') {
+              <button style="background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500;" (click)="cancelAppointment(appointment.id)">Cancel</button>
+            }
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="5" style="padding: 48px 0; text-align: center; color: #6b7280;">
+            <svg style="width: 48px; height: 48px; margin: 0 auto 12px; opacity: 0.5;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+            </svg>
+            <p style="margin: 0 0 4px; font-weight: 500; color: #111827;">No records found</p>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

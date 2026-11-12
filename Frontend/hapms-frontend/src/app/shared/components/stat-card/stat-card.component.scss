@@ -1,0 +1,31 @@
+@use '../../../../styles/tokens' as t;
+article {
+  padding: 20px 19px;
+  border: 1px solid t.$border;
+  border-radius: 12px;
+  background: white;
+  min-height: 136px;
+}
+.card-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  color: t.$muted;
+}
+app-icon {
+  color: t.$teal;
+}
+strong {
+  display: block;
+  margin: 15px 0;
+  font-size: 32px;
+  line-height: 1;
+  color: t.$navy;
+}
+p {
+  font-size: 11px;
+  color: t.$muted;
+  margin: 0;
+  line-height: 1.5;
+}

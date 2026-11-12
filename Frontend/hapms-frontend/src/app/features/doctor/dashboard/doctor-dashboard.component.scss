@@ -1,0 +1,87 @@
+@use '../../../../styles/tokens' as t;
+@use '../../../../styles/doctor-schedule-table';
+
+.heading,
+.schedule-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.heading {
+  margin-bottom: 24px;
+}
+h1 {
+  font-size: 28px;
+  margin: 0;
+  line-height: 1.2;
+}
+.schedule-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: t.$navy;
+  font-weight: 600;
+  background: white;
+  border: 1px solid t.$border;
+  border-radius: 8px;
+  padding: 11px 15px;
+  min-height: 42px;
+  font-size: 14px;
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
+}
+.stats app-stat-card {
+  display: block;
+}
+.schedule {
+  background: white;
+  border: 1px solid t.$border;
+  border-radius: 12px;
+  padding: 24px;
+}
+.schedule-heading {
+  margin-bottom: 20px;
+}
+h2 {
+  font-size: 18px;
+  margin: 0 0 6px;
+}
+.schedule-heading p,
+.empty {
+  color: t.$muted;
+  font-size: 13px;
+  margin: 0;
+}
+.schedule-heading a {
+  color: #007f77;
+  font-size: 13px;
+  font-weight: 600;
+}
+.empty {
+  padding: 14px 0;
+}
+@media (max-width: 1150px) {
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .heading,
+  .schedule-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .schedule {
+    padding: 16px;
+  }
+}
+@media (max-width: 420px) {
+  .stats {
+    grid-template-columns: 1fr;
+  }
+}
